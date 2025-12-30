@@ -1,26 +1,77 @@
-@import "tailwindcss";
+@import "tailwindcss"; /* Tailwind v4 ka naya tarika */
 
+@theme {
+  /* Yahan apne custom variables ko Tailwind theme mein map karo */
+  --color-background: #fff8f8;
+  --color-secondary-color: #f6f6f8;
+
+
+  --color-bg-primary:#eaeaf1;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #1313ec;
+  
+  --color-text-primary: #000;
+  --color-text-secondary: #818fa0;
+  --color-text-secondary-light: #c7c7cb;
+  --color-text-tertiary: #1313ec;
+}
+
+/* Light Mode Variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f4f8;
+  --foreground: #000000;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* Dark Mode Variables */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background:#f6f6f8;
     --foreground: #ededed;
+    /* Dark mode ke liye baaki colors bhi yahan override kar sakte ho */
+  }
+}
+
+@utility flex-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Custom Components */
+@layer components {
+  .button {
+    /* Tailwind v4 mein @apply ke liye reference zaroori nahi agar @import "tailwindcss" top par hai */
+    @apply px-4 py-2 sm:px-6 sm:py-3 md:px-7 md:py-3 lg:px-8 lg:py-4 rounded-lg sm:rounded-xl md:rounded-2xl text-sm sm:text-base md:text-lg lg:text-xl text-white font-medium transition-all duration-300 ease-in-out hover:scale-102 active:scale-97;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--color-bg-tertiary);
+    box-shadow: 0px 2px 8px rgba(19, 19, 236, 0.3);
+  }
+
+  .button:hover {
+    box-shadow: 0px 4px 12px rgba(19, 19, 236, 0.5);
+  }
+
+  .input {
+    @apply w-full px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 rounded-lg sm:rounded-xl border-2 border-gray-300 focus:outline-none  font-medium text-sm sm:text-base md:text-base text-gray-600 transition-all duration-300 placeholder:text-gray-400;
+    background-color: var(--color-bg-secondary);
+    box-shadow: 0px 2px 8px rgba(185, 181, 181, 0.4);
+  }
+
+  .input:focus {
+    background-color: var(--color-bg-secondary);
+    box-shadow: 0px 4px 12px rgba(55, 55, 62, 0.2);
+  }
+
+  .input::placeholder {
+    color: var(--color-text-secondary-light);
   }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--color-bg-primary);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
