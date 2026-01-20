@@ -3,7 +3,7 @@ import mongoose, {Document, Schema} from 'mongoose';
 interface member extends Document{
     houseId:Schema.Types.ObjectId;
     name:string;
-    avatarUrl:string;
+    avatar:string;
     email?:string;
     phone?:number;
     joindedAt:Date;
@@ -21,17 +21,15 @@ const memberSchema = new Schema<member>({
         required:true,
         unique:true
     },
-    avatarUrl:{
+    avatar:{
         type:String,
         required:true 
     },
     email:{
         type:String,
-        required:false
     },
     phone:{
         type:Number,
-        required:false
     },
     joindedAt:{
         type:Date,
