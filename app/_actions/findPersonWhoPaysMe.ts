@@ -15,7 +15,7 @@ const myPayments = allTransactions
     .map((t)=>({
       from: t.fromName,
       amount: t.amount,
-      AvatarUrl: t.fromAvatar
+      avatar: t.fromAvatar
     }))
 
     return myPayments;

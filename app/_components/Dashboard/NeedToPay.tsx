@@ -1,0 +1,44 @@
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+
+const toPay = [
+  { id: 3, name: "Rahul Sharma", amount: 1250},
+  { id: 4, name: "Ananya Roy", amount: 1500  }
+];
+
+export default function NeedToPay() {
+  return (
+    <div className="flex flex-col gap-4 bg-dash-card-bg rounded-3xl p-6 shadow-sm border border-gray-100 w-full relative">
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-xl font-bold">You Need to Pay</h2>
+      </div>
+
+      <div className="flex flex-col gap-4 overflow-y-auto max-h-[320px] scrollbar-red pr-1">
+        {toPay.map((item, i) => (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.1 }}
+            className="rounded-2xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden bg-red-50 border border-red-100"
+          >
+            <div className="flex items-center gap-3">
+               <div className="relative">
+                 <img src={`/assets/avatars/avatar-${item.id}.jpg`} className="w-10 h-10 rounded-full shadow-sm object-cover" onError={(e) => { e.currentTarget.src = `https://ui-avatars.com/api/?name=${item.name}&background=random` }} />
+               </div>
+               <div>
+                  <h3 className="font-bold text-gray-900 leading-tight">{item.name}</h3>
+                  <div className="text-sm font-bold text-red-600 mt-0.5">₹{item.amount.toLocaleString()}</div>
+               </div>
+            </div>
+            
+            <button className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-full shadow-sm transition-colors text-center shrink-0">
+              Pay
+            </button>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}

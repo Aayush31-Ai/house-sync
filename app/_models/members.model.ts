@@ -19,7 +19,6 @@ const memberSchema = new Schema<member>({
     name:{
         type:String,
         required:true,
-        unique:true
     },
     avatar:{
         type:String,
@@ -40,5 +39,7 @@ const memberSchema = new Schema<member>({
         default:0
     }
 })
+
+memberSchema.index({ houseId: 1, name: 1 }, { unique: true });
 
 export default mongoose.models.member || mongoose.model("member",memberSchema)

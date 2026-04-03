@@ -14,7 +14,7 @@ const CreateMemberForm = () => {
       <form action={submit}>
         <input type="text" name="houseId" placeholder='houseId' />
         <input type="text" name="name" placeholder='name' />
-        <input type="text" name="avatarUrl" placeholder='avatarUrl' />
+        <input type="text" name="avatar" placeholder='avatar' />
         <button className='bg-yellow-300 text-black p-4 rounded-lg'>Create Member</button>
       </form>
     </div>

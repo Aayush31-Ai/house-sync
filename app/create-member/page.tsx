@@ -3,6 +3,8 @@
 import { User, Home, Sparkles, Check } from "lucide-react";
 import { use, useState, useEffect } from "react";
 import createMember from "../_actions/createMember";
+import { useRouter } from "next/navigation";
+
 
 const avatars = [
   "avatar-1.png",
@@ -21,12 +23,20 @@ export default function Page({ searchParams }: { searchParams: Promise<{ houseId
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+
+  const router = useRouter()
   const submitHandler = async (formData: FormData) => {
     setIsSubmitting(true);
     try {
       const result = await createMember(formData);
         console.log(result);
-    } finally {
+        router.replace(`/house/${result.memberId}`);
+
+    }
+    catch (error) {
+      console.error("Error creating member:", error);
+    }
+    finally {
       setIsSubmitting(false);
     }
   };

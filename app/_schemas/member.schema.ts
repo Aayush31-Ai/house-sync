@@ -7,7 +7,7 @@ export const memberSchema = z.object({
     houseId:objectSchema,
     email:z.string().email().optional(),
     phone:z.number().optional(),
-    avatarUrl:z.string().url(),
+    avatar:z.string(),
     joinedAt:z.date()
 })  
 

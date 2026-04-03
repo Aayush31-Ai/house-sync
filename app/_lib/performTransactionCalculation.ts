@@ -7,11 +7,11 @@ try {
     
     let debtors = members
       .filter((m) => m.balance < 0)
-      .map(m => ({ id: m._id.toString(), name: m.name, avatar: m.avatarUrl, balance: Math.abs(m.balance) }));
+      .map(m => ({ id: m._id.toString(), name: m.name, avatar: m.avatar, balance: Math.abs(m.balance) }));
     
     let creditors = members
       .filter((m) => m.balance > 0)
-      .map(m => ({ id: m._id.toString(), name: m.name, avatar: m.avatarUrl, balance: m.balance }));
+      .map(m => ({ id: m._id.toString(), name: m.name, avatar: m.avatar, balance: m.balance }));
 
 
 debtors.sort((a, b) => b.balance - a.balance);

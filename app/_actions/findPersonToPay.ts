@@ -1,5 +1,4 @@
 "use server";
-
 import connectToDb from "../_lib/connectToDb";
 import performTransactionCalculation from "../_lib/performTransactionCalculation";
 
@@ -17,7 +16,9 @@ const findPersonToPay = async (houseId: string, currentUserId: string) => {
       .map((t) => ({
         to: t.toName,
         amount: t.amount,
-        AvatarUrl: t.toAvatar,
+        avatar: t.toAvatar,
+
+      
       }));
     if (myPayments.length === 0) {
       return { message: "No payments found" };

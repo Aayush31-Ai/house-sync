@@ -14,7 +14,7 @@ const getMemberInfo = async (memberId: string) => {
         //     _id: String(member._id),
         //     houseId: String(member.houseId),
         //     name: member.name,
-        //     avatarUrl: member.avatarUrl,
+        //     avatar: member.avatar,
         //     email: member.email ?? null,
         //     phone: member.phone ?? null,
         //     joindedAt: member.joindedAt ? new Date(member.joindedAt).toISOString() : null,
