@@ -9,14 +9,23 @@ const getPendingApprovals = async (memberId: string) => {
     const pendingApprovals = await settlementModel
       .find({ to: memberId, status: "pending" })
       .populate("from", "name")
+      .sort({ createdAt: -1 })
       .lean();
 
-    return JSON.parse(JSON.stringify(pendingApprovals));
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(pendingApprovals)),
+    };
   } catch (error: any) {
     console.log(
       "there is an error while getting an pending approvals",
       error.message
     );
+    return {
+      success: false,
+      message: "Unable to fetch pending approvals",
+      data: [],
+    };
   }
 };
 export default getPendingApprovals;

@@ -5,18 +5,27 @@ import connectToDb from "../_lib/connectToDb";
 
 import houseModel from "../_models/house.model";
 
+type CreateHouseResponse =
+  | { success: true; message: string; houseId: string }
+  | { success: false; message: string };
+
 const createHouse = async (houseData: FormData) => {
   await connectToDb();
-  const houseName = houseData.get("houseName") as string;
-  if (houseName.trim() == "") {
-    return console.log("please Enter houseName");
+  const houseName = ((houseData.get("houseName") as string) || "").trim();
+
+  if (!houseName) {
+    return { success: false, message: "Please enter house name" };
   }
 
 try {
-    const ishouseExist = await houseModel.findOne({ houseName });
+    const ishouseExist = await houseModel.findOne({
+      houseName: { $regex: `^${houseName}$`, $options: "i" },
+    });
+
     if (ishouseExist) {
-      return { message: "House already exists" };
+      return { success: false, message: "This house already exists" };
     }
+
     const house = new houseModel({
       houseName
     });
@@ -24,10 +33,14 @@ try {
   
     console.log(house._id.toString());
     
-    return { message: "House created successfully", houseId: house._id.toString()};
+    return {
+      success: true,
+      message: "House created successfully",
+      houseId: house._id.toString(),
+    };
 } catch (error:any) {
     console.log("Error creating house:", error.message);
-    return {message: "Error creating house"}
+    return { success: false, message: "Error creating house" }
 }
 };
 

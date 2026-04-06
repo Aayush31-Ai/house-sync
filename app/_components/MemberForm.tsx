@@ -5,7 +5,8 @@ const HOUSE_ID = "695387f4c1b590faa05618dc"
 const CURRENT_MEMBER_ID = "6953883cc1b590faa05618e3"
 
 const MemberForm = async () => {
-  const members = await getAllMembers(HOUSE_ID, CURRENT_MEMBER_ID)
+  const membersRes = await getAllMembers(HOUSE_ID, CURRENT_MEMBER_ID)
+  const members = membersRes.success ? membersRes.data : []
 
   const handleAddExpense = async (formData: FormData) => {
     "use server"

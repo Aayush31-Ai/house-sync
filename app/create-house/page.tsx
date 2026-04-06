@@ -6,12 +6,21 @@ async function submitHandler(formData: FormData) {
   "use server";
   const resp = await createHouse(formData);
 
-  if (resp?.houseId) {
+  if (resp?.success && resp?.houseId) {
     redirect(`/create-member?houseId=${resp.houseId}`);
   }
+
+  const errorMessage = encodeURIComponent(resp?.message || "Unable to create house");
+  redirect(`/create-house?error=${errorMessage}`);
 }
 
-export default function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const params = await searchParams;
+
   return (
     <div className="min-h-screen w-full flex-center bg-gradient-to-br from-bg-primary to-bg-secondary px-4">
       
@@ -37,6 +46,12 @@ export default function Page() {
 
         {/* Form */}
         <form action={submitHandler} className="space-y-5">
+
+          {params?.error && (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {params.error}
+            </div>
+          )}
           
           <div className="space-y-2">
             <label className="text-sm text-text-secondary flex items-center gap-2">

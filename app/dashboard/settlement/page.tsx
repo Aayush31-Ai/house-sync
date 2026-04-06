@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import AddExpensePageShell from "@/app/_components/AddExpenses/AddExpensePageShell";
+import SettlementPageShell from "../../_components/Settlement/SettlementPageShell";
 import getAuthContext from "@/app/_lib/getAuthContext";
 import getAllMembers from "@/app/_actions/getAllmembers";
+import getPendingApprovals from "@/app/_actions/getPendingApprovals";
 import getMemberInfo from "@/app/_actions/getMemberInfo";
 
 export const metadata: Metadata = {
-  title: "Add Expense | HouseSync",
-  description: "Create and split a new house expense.",
+  title: "Confirm Payment | HouseSync",
+  description: "Upload transaction proof and settle dues securely.",
 };
 
-export default async function AddExpensePage({
+export default async function SettlementPage({
   searchParams,
 }: {
-  searchParams: Promise<{ houseId?: string; memberId?: string }>;
+  searchParams: Promise<{ to?: string; amount?: string; houseId?: string; memberId?: string }>;
 }) {
   const params = await searchParams;
   const auth = await getAuthContext();
@@ -34,20 +35,26 @@ export default async function AddExpensePage({
     return (
       <div className="mx-auto max-w-2xl p-8">
         <div className="rounded-3xl border border-red-100 bg-red-50 p-6 text-red-700">
-          <h2 className="text-xl font-semibold">Cannot add expense</h2>
+          <h2 className="text-xl font-semibold">Cannot open settlement</h2>
           <p className="mt-2 text-sm">Unable to resolve user context for this page.</p>
         </div>
       </div>
     );
   }
 
-  const membersRes = await getAllMembers(effectiveHouseId, effectiveMemberId);
+  const [membersRes, pendingRes] = await Promise.all([
+    getAllMembers(effectiveHouseId, effectiveMemberId),
+    getPendingApprovals(effectiveMemberId),
+  ]);
 
   return (
-    <AddExpensePageShell
+    <SettlementPageShell
       currentMemberId={effectiveMemberId}
-      currentHouseId={effectiveHouseId}
+      houseId={effectiveHouseId}
       members={membersRes.success ? membersRes.data : []}
+      pendingApprovals={pendingRes.success ? pendingRes.data : []}
+      initialAmount={params?.amount ?? ""}
+      initialToMemberId={params?.to ?? ""}
     />
   );
 }

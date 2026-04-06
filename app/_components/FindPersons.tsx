@@ -8,12 +8,12 @@ const FindPersons = () => {
 
         const findPerson=async()=>{
 const result = await findPersonToPay("695387f4c1b590faa05618dc","69538844c1b590faa05618e7")
-console.log(result);
+console.log(result.data || result);
 
     }
     const whoPaysMe=async()=>{
         const result = await findPersonWhoPaysMe("695387f4c1b590faa05618dc","6953883cc1b590faa05618e3")
-        console.log(result);
+  console.log(result.data || result);
         
     }
   return (

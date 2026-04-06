@@ -9,10 +9,17 @@ const getAllMembers = async(houseId:string,currentMemberId:string)=>{
   await connectToDb();
   try {
     const members = await membersModel.find({houseId, _id: { $ne: currentMemberId }}).lean();
-    return JSON.parse(JSON.stringify(members));
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(members)),
+    };
   } catch (error: any) {
     console.log("there is an error while getting all members",error.message);
-    return [];
+    return {
+      success: false,
+      message: "Unable to fetch members",
+      data: [],
+    };
   }
 
 }

@@ -1,6 +1,11 @@
-import { Camera, UploadCloud } from "lucide-react";
+import { UploadCloud } from "lucide-react";
 
-export default function ImageProofDropzone() {
+type ImageProofDropzoneProps = {
+  file: File | null;
+  onFileChange: (file: File | null) => void;
+};
+
+export default function ImageProofDropzone({ file, onFileChange }: ImageProofDropzoneProps) {
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold text-slate-700">Add Image Proof (Optional)</h2>
@@ -11,9 +16,16 @@ export default function ImageProofDropzone() {
         </div>
         <div>
           <p className="text-sm font-medium text-slate-700">Click to upload or drag image</p>
-          <p className="mt-1 text-xs text-slate-400">PNG, JPG or PDF (up to 5MB)</p>
+          <p className="mt-1 text-xs text-slate-400">
+            PNG, JPG or PDF (up to 5MB){file ? ` - ${file.name}` : ""}
+          </p>
         </div>
-        <input type="file" accept="image/png,image/jpeg,application/pdf" className="sr-only" />
+        <input
+          type="file"
+          accept="image/png,image/jpeg,application/pdf"
+          className="sr-only"
+          onChange={(event) => onFileChange(event.target.files?.[0] ?? null)}
+        />
       </label>
 
     </div>

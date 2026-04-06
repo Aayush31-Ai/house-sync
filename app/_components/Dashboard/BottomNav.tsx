@@ -17,13 +17,15 @@ export default function BottomNav() {
   return (
     <>
       <div className="fixed bottom-24 right-4 z-50">
-        <motion.button 
+        <Link href="/dashboard/add-expense">
+          <motion.button 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="w-14 h-14 bg-indigo-600 rounded-full flex justify-center items-center text-white shadow-xl shadow-indigo-600/30 active:bg-indigo-700 transition-colors"
-        >
-          <Plus size={28} />
-        </motion.button>
+          >
+            <Plus size={28} />
+          </motion.button>
+        </Link>
       </div>
 
       <nav className="bg-white border-t border-gray-100 flex justify-between px-8 py-3 rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.02)] safe-p-bottom">

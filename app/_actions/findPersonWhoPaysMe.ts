@@ -8,21 +8,22 @@ const findPersonWhoPaysMe = async (houseId: string, currentUserId: string) => {
   try {
    const allTransactions= await performTransactionCalculation(houseId);
    if (!allTransactions) {
-      return { message: "No transactions found" };
+      return { success: true, data: [] };
     }
 const myPayments = allTransactions
     .filter((t) => t.to === currentUserId)
     .map((t)=>({
-      from: t.fromName,
+          fromId: t.from,
+  from: t.fromName,
       amount: t.amount,
       avatar: t.fromAvatar
     }))
 
-    return myPayments;
+    return { success: true, data: myPayments };
 
   } catch (error:any) {
  console.log("there is an error while finding person who pays me",error.message);
-    return []
+    return { success: false, message: "Unable to fetch receivables", data: [] }
   }
 };
 

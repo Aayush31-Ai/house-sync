@@ -3,6 +3,7 @@
 import { User, Home, Sparkles, Check } from "lucide-react";
 import { use, useState, useEffect } from "react";
 import createMember from "../_actions/createMember";
+import getTakenAvatars from "../_actions/getTakenAvatars";
 import { useRouter } from "next/navigation";
 
 
@@ -21,20 +22,32 @@ export default function Page({ searchParams }: { searchParams: Promise<{ houseId
   const params = use(searchParams);
   const houseId = params?.houseId as string | undefined;
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const [takenAvatars, setTakenAvatars] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
 
   const router = useRouter()
   const submitHandler = async (formData: FormData) => {
     setIsSubmitting(true);
+    setErrorMessage("");
     try {
       const result = await createMember(formData);
-        console.log(result);
-        router.replace(`/house/${result.memberId}`);
+
+      if (!result.success) {
+        setErrorMessage(result.message);
+        return;
+      }
+
+      const nextUrl = `/dashboard?houseId=${encodeURIComponent(result.houseId)}&memberId=${encodeURIComponent(result.memberId)}`;
+      router.replace(nextUrl);
+      router.refresh();
+      window.location.assign(nextUrl);
 
     }
     catch (error) {
       console.error("Error creating member:", error);
+      setErrorMessage("Unable to create profile right now");
     }
     finally {
       setIsSubmitting(false);
@@ -44,9 +57,30 @@ export default function Page({ searchParams }: { searchParams: Promise<{ houseId
   // Auto-select first avatar on load
   useEffect(() => {
     if (!selectedAvatar && avatars.length > 0) {
-      setSelectedAvatar(avatars[0]);
+      const firstAvailableAvatar = avatars.find(
+        (avatar) => !takenAvatars.includes(`/assets/avatars/${avatar}`)
+      );
+
+      if (firstAvailableAvatar) {
+        setSelectedAvatar(firstAvailableAvatar);
+      }
     }
-  }, []);
+  }, [takenAvatars, selectedAvatar]);
+
+  useEffect(() => {
+    if (!houseId) {
+      return;
+    }
+
+    const loadTakenAvatars = async () => {
+      const response = await getTakenAvatars(houseId);
+      if (response.success) {
+        setTakenAvatars(response.data);
+      }
+    };
+
+    loadTakenAvatars();
+  }, [houseId]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-8 md:py-6">
@@ -79,6 +113,12 @@ export default function Page({ searchParams }: { searchParams: Promise<{ houseId
 
         <div className="p-6 md:p-8 space-y-8">
           <form action={submitHandler} className="space-y-8">
+            {errorMessage && (
+              <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {errorMessage}
+              </div>
+            )}
+
             {/* Avatar Selection */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -99,16 +139,24 @@ export default function Page({ searchParams }: { searchParams: Promise<{ houseId
                 {avatars.map((avatar) => {
                   const avatarPath = `/assets/avatars/${avatar}`;
                   const isSelected = selectedAvatar === avatar;
+                  const isTaken = takenAvatars.includes(avatarPath);
 
                   return (
                     <button
                       key={avatar}
                       type="button"
-                      onClick={() => setSelectedAvatar(avatar)}
+                      onClick={() => {
+                        if (!isTaken) {
+                          setSelectedAvatar(avatar);
+                        }
+                      }}
+                      disabled={isTaken}
                       className={`
                         relative group aspect-square rounded-2xl transition-all duration-300
                         ${isSelected 
                           ? "ring-4 ring-blue-500 ring-offset-2 transform scale-105" 
+                          : isTaken
+                          ? "opacity-40 cursor-not-allowed"
                           : "hover:scale-105 hover:ring-2 hover:ring-blue-300"
                         }
                       `}
@@ -124,6 +172,12 @@ export default function Page({ searchParams }: { searchParams: Promise<{ houseId
                       {isSelected && (
                         <div className="absolute -top-2 -right-2 bg-blue-500 text-white rounded-full p-1">
                           <Check size={16} />
+                        </div>
+                      )}
+
+                      {isTaken && (
+                        <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/45 text-white text-xs font-semibold">
+                          Taken
                         </div>
                       )}
 
@@ -208,7 +262,11 @@ export default function Page({ searchParams }: { searchParams: Promise<{ houseId
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={!selectedAvatar || isSubmitting}
+              disabled={
+                !selectedAvatar ||
+                isSubmitting ||
+                takenAvatars.includes(`/assets/avatars/${selectedAvatar}`)
+              }
               className={`
                 w-full py-4 px-6 rounded-xl font-semibold text-white
                 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]

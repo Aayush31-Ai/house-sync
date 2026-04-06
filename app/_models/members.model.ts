@@ -40,6 +40,6 @@ const memberSchema = new Schema<member>({
     }
 })
 
-memberSchema.index({ houseId: 1, name: 1 }, { unique: true });
+memberSchema.index({ houseId: 1, name: 1 });
 
 export default mongoose.models.member || mongoose.model("member",memberSchema)

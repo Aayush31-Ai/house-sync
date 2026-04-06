@@ -8,25 +8,23 @@ const findPersonToPay = async (houseId: string, currentUserId: string) => {
     const allTransactions = await performTransactionCalculation(houseId);
 
     if (!allTransactions) {
-      return { message: "No transactions found" };
+      return { success: true, data: [] };
     }
 
     const myPayments = allTransactions
       .filter((t) => t.from === currentUserId)
       .map((t) => ({
+        toId: t.to,
         to: t.toName,
         amount: t.amount,
         avatar: t.toAvatar,
 
       
       }));
-    if (myPayments.length === 0) {
-      return { message: "No payments found" };
-    }
-    return myPayments;
+    return { success: true, data: myPayments };
   } catch (error: any) {
     console.log("Error in findPersonToPay:", error.message);
-    return [];
+    return { success: false, message: "Unable to fetch payable people", data: [] };
   }
 };
 
