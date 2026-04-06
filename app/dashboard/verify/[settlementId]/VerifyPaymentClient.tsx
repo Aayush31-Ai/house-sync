@@ -148,7 +148,7 @@ export default function VerifyPaymentClient({
           <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full">
             <div className="flex items-center justify-between p-4 border-b border-gray-50">
               <div className="flex items-center gap-2 font-medium text-gray-900">
-                <imgIcon className="w-5 h-5 text-gray-400" />
+                <ImageIcon className="w-5 h-5 text-gray-400" />
                 Payment Proof
               </div>
               {settlement.proofUrl && (
@@ -181,7 +181,7 @@ export default function VerifyPaymentClient({
                 </div>
               ) : (
                 <div className="text-gray-400 flex flex-col items-center gap-2">
-                  <imgIcon className="w-12 h-12 opacity-50" />
+                  <ImageIcon className="w-12 h-12 opacity-50" />
                   <p>No proof uploaded</p>
                 </div>
               )}

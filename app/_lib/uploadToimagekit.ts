@@ -15,7 +15,7 @@ export const uploadToImagekit=async(file:File)=>{
         const response = await imagekit.upload({
             file:buffer,
             fileName:file.name,
-            folder:"/house-sync"
+            folder:"/evenly"
         })
 
         return response.url

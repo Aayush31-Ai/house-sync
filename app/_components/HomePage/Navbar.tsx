@@ -1,11 +1,28 @@
+"use client"
+
 import { House } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10)
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <div>
-         <nav className="fixed top-0 w-full z-50 shadow-md bg-white/60 backdrop-blur-md border-b border-gray-100">
+         <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+            scrolled 
+              ? 'bg-white/60 backdrop-blur-md shadow-md border-b border-gray-100' 
+              : 'bg-transparent border-transparent'
+          }`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="flex justify-between items-center h-16">
                     {/* Logo */}
@@ -13,7 +30,7 @@ const Navbar = () => {
                       <div className="bg-indigo-600 p-1.5 rounded-lg">
                         <House className="w-5 h-5 text-white" />
                       </div>
-                      <span className="text-xl font-bold text-gray-900 tracking-tight">HouseSync</span>
+                      <span className="text-xl font-bold text-gray-900 tracking-tight">Evenly</span>
                     </div>
         
                     <div className="flex  md:flex items-center space-x-8 text-sm font-medium text-gray-600">

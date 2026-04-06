@@ -6,7 +6,7 @@ import getPendingApprovals from "@/app/_actions/getPendingApprovals";
 import getMemberInfo from "@/app/_actions/getMemberInfo";
 
 export const metadata: Metadata = {
-  title: "Confirm Payment | HouseSync",
+  title: "Confirm Payment | Evenly",
   description: "Upload transaction proof and settle dues securely.",
 };
 

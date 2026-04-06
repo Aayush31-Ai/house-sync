@@ -26,7 +26,7 @@ export default function Sidebar() {
              <Home size={18} />
           </div>
           <div>
-            <h1 className="font-bold text-lg leading-tight tracking-tight">HouseSync</h1>
+            <h1 className="font-bold text-lg leading-tight tracking-tight">Evenly</h1>
             <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Expense Manager</p>
           </div>
         </div>

@@ -24,14 +24,14 @@ export default function TotalBalanceCard({
 
       if (navigator.share) {
         await navigator.share({
-          title: `Join ${houseName} on HouseSync`,
+          title: `Join ${houseName} on Evenly`,
           text: `Use this link to create your profile and join ${houseName}.`,
           url: inviteUrl,
         });
         setInviteStatus("Invite shared successfully");
       } else {
         await navigator.clipboard.writeText(
-          `Join ${houseName} on HouseSync: ${inviteUrl}`
+          `Join ${houseName} on Evenly: ${inviteUrl}`
         );
         setInviteStatus("Invite link copied");
       }

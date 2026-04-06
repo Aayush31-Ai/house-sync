@@ -5,7 +5,7 @@ import getAllMembers from "@/app/_actions/getAllmembers";
 import getMemberInfo from "@/app/_actions/getMemberInfo";
 
 export const metadata: Metadata = {
-  title: "Add Expense | HouseSync",
+  title: "Add Expense | Evenly",
   description: "Create and split a new house expense.",
 };
 
